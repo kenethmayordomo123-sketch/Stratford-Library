@@ -3,14 +3,17 @@ import sqlite3
 from datetime import datetime
 import os
 
+# -------------------- FLASK APP --------------------
 app = Flask(__name__)
 app.secret_key = "supersecretkey"  # Change to a more secure one for production
 
-DB = os.path.join(os.path.dirname(__file__), "library.db")  # Always use absolute path
+# -------------------- DATABASE PATH --------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "library.db")  # Absolute path
 
-# -------------------- DATABASE --------------------
+# -------------------- DATABASE FUNCTIONS --------------------
 def get_db():
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -112,4 +115,5 @@ def logout():
 # -------------------- RUN --------------------
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True)
+    # debug=False for production (Render)
+    app.run()
