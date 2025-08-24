@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📚 Library Borrowing System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">📖 Library System</a>
+      <div class="d-flex">
+        <span class="navbar-text me-3">
+          Welcome, {{ user_name }} ({{ user_id }})
+        </span>
+        <a class="btn btn-outline-light" href="/logout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="container mt-4">
+    <div class="hero">
+      <h1>📚 Borrow a Book</h1>
+      <p>Fill out the form below to borrow a book from Stratford Library</p>
+    </div>
+
+    <!-- Borrow Form -->
+    <div class="card p-4 shadow-sm mb-4">
+      <h4 class="mb-3">📝 Borrow Form</h4>
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">Book Title</label>
+          <input type="text" name="book_title" class="form-control" placeholder="Enter book title..." required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Borrow Book</button>
+      </form>
+    </div>
+
+    <!-- Borrowed Books Table -->
+    <div class="card p-4 shadow-sm">
+      <h4 class="mb-3">📌 Currently Borrowed Books</h4>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Book Title</th>
+              <th>Borrower</th>
+              <th>Student ID</th>
+              <th>Date Borrowed</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for b in borrows %}
+            <tr>
+              <td>{{ b.id }}</td>
+              <td>{{ b.book_title }}</td>
+              <td>{{ b.borrower_name }}</td>
+              <td>{{ b.borrower_id }}</td>
+              <td>{{ b.date_borrowed }}</td>
+              <td>
+                <a href="{{ url_for('return_book', borrow_id=b.id) }}" class="btn btn-success btn-sm">Return</a>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="6" class="text-center text-muted">No borrowed books yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Library System - Stratford</p>
+  </footer>
+</body>
+</html>
